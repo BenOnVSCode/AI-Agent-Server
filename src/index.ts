@@ -24,10 +24,10 @@ server.post('/costumer_service/vapi_webhook', async (request: FastifyRequest<{ B
 });
 
 // Run the server!
-server.listen({ port: 7000 }, (err, address) => {
-    if (err) {
-        server.log.error(err);
-        process.exit(1);
-    }
-    console.log(`Server is now listening on ${address}`);
+server.listen({ port: 7000, host: '0.0.0.0' }, (err) => {
+  if (err) {
+    server.log.error(err);
+    process.exit(1);
+  }
+  console.log(`Server is now listening on port 7000`);
 });
