@@ -10,7 +10,7 @@ dotenv.config();
 const server = fastify();
 
 // Declare a route
-server.post('/costumer_service/vapi_webhook', async (request: FastifyRequest<{ Body: RequestBody }>, reply) => {
+server.post('/verification/vapi_webhook', async (request: FastifyRequest<{ Body: RequestBody }>, reply) => {
   try {
     const transformedData = transformData(request.body);
     const text = formatEmailHtml(transformedData);
@@ -18,7 +18,6 @@ server.post('/costumer_service/vapi_webhook', async (request: FastifyRequest<{ B
     await sendEmail(emails.split(","), `Internal Report: ${transformedData.name || ""}`,  text);
     return { message: 'Email sent successfully' };
   } catch (error) {
-    console.log(error)
     reply.status(500).send({ error: 'Failed to send email' });
   }
 });
