@@ -10,6 +10,7 @@ export async function sendEmail(to: string[], subject: string, html: string) {
 			subject,
 			html
 		});
+		console.log(response)
     return true;
 	} catch (err) {
 		console.error(err);
