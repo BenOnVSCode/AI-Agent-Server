@@ -23,7 +23,7 @@ server.post('/verification/vapi_webhook', async (request: FastifyRequest<{ Body:
 });
 
 // Run the server!
-server.listen({ port: 7000, host: '0.0.0.0' }, (err) => {
+server.listen({ port: 7000 }, (err) => {
   if (err) {
     server.log.error(err);
     process.exit(1);
