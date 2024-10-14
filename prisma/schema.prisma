@@ -11,6 +11,7 @@ generator client {
 
 model User {
   id        Int      @id @default(autoincrement())
+  name      String
   email     String   @unique
   password  String
   role      Role     @default(USER)
@@ -24,15 +25,24 @@ model Call {
   id             String      @id @unique
   clientName     String
   reference      String
-  createdAt      DateTime @default(now())
-  duration       Int      // Duration in seconds
-  status         String   // e.g., 'completed', 'failed'
-  initiatedById  Int
-  reasonFailed   String?  // Optional reason if the call failed
-  recordingUrl   String?  // Optional recording URL
-  user           User     @relation(fields: [initiatedById], references: [id])
+  createdAt      DateTime   @default(now())
+  duration       Int
+  statusId       Int         // Added statusId field
+  initiatedById  Int         // Ensure this is a user ID
+  reasonFailed   String?
+  recordingUrl   String?    
+  user           User        @relation(fields: [initiatedById], references: [id]) // Relation to User
   callTypeId     Int
-  callType       CallType  @relation(fields: [callTypeId], references: [id])
+  callType       CallType    @relation(fields: [callTypeId], references: [id])
+  status         Status      @relation(fields: [statusId], references: [id]) // Relation to Status
+  
+  notes          String      @default("")
+  summary        String      @default("")
+  clientAddress  String      @default("")
+  postCode       String      @default("")
+  hasPOA        Boolean     @default(false)
+  success        Boolean     @default(false)
+  lastEdited     DateTime    @default(now())
 }
 
 model CallType {
@@ -44,9 +54,16 @@ model CallType {
 model Activity {
   id         Int      @id @default(autoincrement())
   userId     Int
-  action     String   // e.g., 'user created', 'call initiated'
+  action     String   
   createdAt  DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id], name: "UserActivities")
+}
+
+model Status { 
+  id       Int      @id @default(autoincrement())
+  name     String   @unique 
+  color    String
+  calls    Call[]   
 }
 
 enum Role {

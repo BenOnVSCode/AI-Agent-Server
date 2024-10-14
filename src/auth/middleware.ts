@@ -2,7 +2,6 @@ import { TRPCError } from '@trpc/server';
 import { t } from '../trpc/context';
 
 
-// Middleware to check if the user is authenticated
 export const isAuthenticated = t.middleware(async ({ ctx, next }) => {
   if (!ctx.user) {
     throw new TRPCError({
@@ -13,7 +12,7 @@ export const isAuthenticated = t.middleware(async ({ ctx, next }) => {
   return next();
 });
 
-// Middleware to check if the user is an admin
+
 export const isAdmin = t.middleware(async ({ ctx, next }) => {
   // Type guard to check if ctx.user is JwtPayload
   if (!ctx.user || typeof ctx.user === 'string' || ctx.user.role !== 'ADMIN') {

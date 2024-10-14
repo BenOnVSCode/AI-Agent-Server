@@ -43,12 +43,8 @@ export const createVerificationCall = t.procedure
 				);
 			}
 
-			// Create the assistant object
 			const assistant = createVerificationAssistant(name, address, split, price, bank, isDD);
-
-			// Call the createCall function and get the response
 			const callResponse = await createCall(assistant, VERIFICATION_NUMBER_ID, number);
-      console.log(callResponse)
       const initiatedByID = initiatedBy === 'CRM' ? 0 : parseInt(initiatedBy);
       const callType = await prisma.callType.findUnique({
         where: {
@@ -56,24 +52,10 @@ export const createVerificationCall = t.procedure
         },
       });
       if(!callType) throw new Error('Call type verification does not exist')
-      await prisma.call.create({
-        data: {
-          id: callResponse.id,
-          clientName: name,
-          reference: id,
-          duration: 0,
-          status: 'Initiated',
-          initiatedById: initiatedByID,
-          reasonFailed: null,
-          recordingUrl: null,
-          callTypeId: callType.id
-        }
-      })
-			// Return the response from createCall
+      
 			return callResponse;
 
 		} catch (error: any) {
-			// Log the error and return a structured error response
 			console.error('Error in createVerificationCall:', error.message);
 			throw new Error(
 				JSON.stringify({
