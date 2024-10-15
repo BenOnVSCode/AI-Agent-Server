@@ -1,27 +1,33 @@
 import { t } from "../context";
 import { z } from "zod";
-import { prisma } from "../../utils/prisma"; // Adjust the import path as necessary
-import { formatDuration } from "../../utils/helper";
+import { prisma } from "../../utils/prisma"; 
+import { isAdmin } from "../../auth/middleware";
 
 export const getAllCalls = t.procedure
   .query(async ({ ctx }) => {
     const query = ctx.req.query as { page: string }
-    const page = parseInt(query.page) || 1; // Default to page 1 if not provided
+    const page = parseInt(query.page) || 1; 
     const limit = 10;
-    const skip = (page - 1) * limit; // Calculate the number of items to skip
+    const skip = (page - 1) * limit; 
 
     const calls = await prisma.call.findMany({
-      skip, // Skip the calculated number of items
-      take: limit, // Limit the number of items returned
+      skip, 
+      take: limit, 
       include: {
         user: {
           select: {
-            name: true, // To get the `createdBy` field
+            name: true, 
           },
+        },
+        status: {
+          select: {
+            name: true,
+            color: true
+          }
         },
         callType: {
           select: {
-            type: true, // To get the `type` field
+            type: true, 
           },
         },
       },
@@ -32,19 +38,19 @@ export const getAllCalls = t.procedure
     // Map the calls to include the proper structure
     const formattedCalls = calls.map((call) => ({
       id: call.id,
-      clientName: call.clientName,
-      statusId: call.statusId,
       type: call.callType.type,
-      duration: formatDuration(call.duration), // Helper function to format duration
-      createdAt: call.createdAt.toISOString(),
-      createdBy: call.user.name,
-      notes: call.notes,
-      summary: call.summary,
-      clientAddress: call.clientAddress,
+      date: call.createdAt,
+      transcript: call.transcript,
+      statusColor: call.status.color,
+      number: call.number,
+      status: call.status.name,
+      recordingUrl: call.recordingUrl,
+      clientName: call.clientName,
       postCode: call.postCode,
-      hasPOA: call.hasPOA,
-      success: call.success,
-      lastEdited: call.lastEdited.toISOString(),
+      poa: call.hasPOA,
+      initiatedBy: call.user.name,
+      duration: call.duration,
+      summary: call.summary
     }));
 
     return {
@@ -58,10 +64,10 @@ export const getAllCalls = t.procedure
 
 
 export const deleteCall = t.procedure
+  .use(isAdmin)
   .input(z.object({ id: z.string() })) 
   .mutation(async ({ input }) => {
     const { id } = input;
-
     const deletedCall = await prisma.call.delete({
       where: { id },
     });

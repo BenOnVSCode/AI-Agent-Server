@@ -18,7 +18,7 @@ export const createContext = async ({ req }: CreateFastifyContextOptions) => {
     } catch (error) {
       console.error('Invalid token', error);
     }
-  }
+  } 
 
   return {
     req,

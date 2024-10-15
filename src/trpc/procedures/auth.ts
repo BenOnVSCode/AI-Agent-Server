@@ -5,10 +5,12 @@ import bcrypt from 'bcrypt';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { isAdmin, isAuthenticated } from '../../auth/middleware'; // Adjust the import based on your structure
 import { prisma } from '../../utils/prisma';
+import { createActivity } from '../../utils/logs';
 
 
 
 export const createUser = t.procedure
+  .use(isAdmin)
   .input(
     z.object({
       email: z.string().email(),
@@ -17,7 +19,7 @@ export const createUser = t.procedure
       role: z.enum(['USER', 'ADMIN', 'SUPERVISOR']),
     }),
   )
-  .mutation(async ({ input }) => {
+  .mutation(async ({ input, ctx }) => {
     const { email, password, role, name } = input;
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
@@ -28,6 +30,7 @@ export const createUser = t.procedure
         role,
       },
     }); 
+    
     return { user };
 });
 
@@ -51,6 +54,7 @@ export const loginUser = t.procedure
     const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET!, {
       expiresIn: '1d',
     });
+    createActivity(user.id, `${user.name} logged in`);
     return { token };
   });
 
@@ -64,6 +68,7 @@ export const profile = t.procedure
       select: {
         name: true,
         email: true,
+        role: true
       },
     });
     if (!userProfile) {
@@ -72,5 +77,6 @@ export const profile = t.procedure
     return {
       name: userProfile.name,
       email: userProfile.email,
+      role: userProfile.role
     };
   });
