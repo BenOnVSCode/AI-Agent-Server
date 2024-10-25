@@ -1,6 +1,6 @@
 import z from "zod";
 import { t } from "../context";
-
+import { v4 as uuid } from "uuid";
 import { createVerificationAssistant } from "../../utils/assistant/verification";
 import { createCall } from "../../services/createCall";
 import { prisma } from "../../utils/prisma";
@@ -16,16 +16,16 @@ export const createVerificationCall = t.procedure
       price: z.number(),
       bank: z.string(),
       isDD: z.boolean(),
-      initiatedBy: z.string(),
+      initiatedBy: z.number(),
+			postcode: z.string(),
 		})
 	)
 	.mutation(async ({ input, ctx }) => {
 		try {
-			const { name, id, number, address, split, price, bank, isDD, initiatedBy } = input;
+			const { name, id, number, address, split, price, bank, isDD, initiatedBy, postcode } = input;
 			const VERIFICATION_NUMBER_ID = process.env.VERIFICATION_NUMBER_ID;
-
 			// Validate input
-			if (!name || !id || !number || !address || !price || !bank || isDD === undefined || split === undefined) {
+			if (!name || !id || !number || !address || !price || !bank || isDD === undefined || split === undefined || !postcode) {
 				throw new Error(
 					JSON.stringify({
 						code: "INVALID_INPUT",
@@ -45,15 +45,32 @@ export const createVerificationCall = t.procedure
 
 			const assistant = createVerificationAssistant(name, address, split, price, bank, isDD);
 			const callResponse = await createCall(assistant, VERIFICATION_NUMBER_ID, number);
-      const initiatedByID = initiatedBy === 'CRM' ? 0 : parseInt(initiatedBy);
       const callType = await prisma.callType.findUnique({
         where: {
-          type: 'Verification', 
+          id: 0
         },
       });
-      if(!callType) throw new Error('Call type verification does not exist')
+			const status = await prisma.status.findUnique({
+				where: {
+					id: 0
+				}
+			})
+      if(!callType || !status) throw new Error('Call type verification does not exist')
+			const call = await prisma.call.create({
+				data: {
+					clientName: name,
+					callTypeId: callType.id,
+					statusId: status.id,
+					number,
+					initiatedById: initiatedBy,
+					reference: id,
+					duration: 0,
+					id: callResponse.id,
+					postCode: postcode
+				}
+			})
       
-			return callResponse;
+			return call;
 
 		} catch (error: any) {
 			console.error('Error in createVerificationCall:', error.message);

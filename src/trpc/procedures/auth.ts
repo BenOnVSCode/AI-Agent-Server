@@ -68,7 +68,8 @@ export const profile = t.procedure
       select: {
         name: true,
         email: true,
-        role: true
+        role: true,
+        id: true
       },
     });
     if (!userProfile) {
@@ -77,6 +78,7 @@ export const profile = t.procedure
     return {
       name: userProfile.name,
       email: userProfile.email,
-      role: userProfile.role
+      role: userProfile.role,
+      id: userProfile.id
     };
   });

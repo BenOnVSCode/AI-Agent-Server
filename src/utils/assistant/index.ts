@@ -32,9 +32,9 @@ export function createAssistant(script: string, firstMessage: string): Assistant
 		voicemailMessage: "Hey this is Mary from Mary's Dental. Please call back when you're available.",
 		endCallMessage: "Bye",
 		clientMessages: ["transcript", "hang", "function-call", "speech-update", "metadata", "conversation-update"],
-		serverMessages: ["end-of-call-report"],
+		serverMessages: ["end-of-call-report", "hang", "status-update"],
 		responseDelaySeconds: 0.2,
-		serverUrl: "https://webhook.elderlyaid.co.uk/verification/vapi_webhook",
+		serverUrl: "https://2a97-154-144-224-33.ngrok-free.app/api/trpc/webhook",
 		endCallPhrases: ["goodbye"],
 		analysisPlan: {
 			summaryPrompt: "Beside the summary note these informations:\nName of the client, Post code, Address, POA, Phone number. \nPlease provide it in this format between quotes (make sure to split the lines with \\n):\n`\n----------------------------------\nName:  ${name} \\n\nPost Code: ${postcode} \\n\nClient Address: ${client address} \\n\nHas POA: (True or false) (If the client's finances are handled by someone even if only during emergencies set this one to True) , \\n\n----------------------------------\n`",

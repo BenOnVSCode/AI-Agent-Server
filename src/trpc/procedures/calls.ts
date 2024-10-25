@@ -31,6 +31,9 @@ export const getAllCalls = t.procedure
           },
         },
       },
+      orderBy: {
+        createdAt: 'desc'
+      }
     });
 
     const totalCount = await prisma.call.count();
@@ -74,3 +77,4 @@ export const deleteCall = t.procedure
 
     return deletedCall; 
   });
+
