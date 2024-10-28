@@ -66,7 +66,10 @@ export const createVerificationCall = t.procedure
 					reference: id,
 					duration: 0,
 					id: callResponse.id,
-					postCode: postcode
+					postCode: postcode,
+					split: split,
+					dd: isDD,
+					price,
 				}
 			})
       

@@ -53,7 +53,11 @@ export const getAllCalls = t.procedure
       poa: call.hasPOA,
       initiatedBy: call.user.name,
       duration: call.duration,
-      summary: call.summary
+      summary: call.summary,
+      address: call.clientAddress,
+      isDD: call.dd,
+      split: call.split,
+      price: call.price
     }));
 
     return {

@@ -41,9 +41,12 @@ model Call {
   clientAddress  String      @default("")
   transcript     String      @default("")
   postCode       String      @default("")
-  hasPOA        Boolean     @default(false)
+  hasPOA        Boolean      @default(false)
   success        Boolean     @default(false)
   lastEdited     DateTime    @default(now())
+  split          Boolean     @default(false)
+  dd             Boolean     @default(false)
+  price          Int         @default(0)
 }
 
 model CallType {

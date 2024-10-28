@@ -1,16 +1,16 @@
 export interface RequestBody {
 	message: {
-		phoneNumber: {
-			number: string;
+		phoneNumber?: {
+			number?: string;
 		};
-		analysis: {
-			summary: string;
+		analysis?: {
+			summary?: string;
 		};
-		artifact: {
-			recordingUrl: string;
+		artifact?: {
+			recordingUrl?: string;
 		};
-		customer: {
-			number: string;
+		customer?: {
+			number?: string;
 		};
 	};
 }

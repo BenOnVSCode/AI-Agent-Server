@@ -14,7 +14,7 @@ interface Data {
 }
 export async function updateCallStatus(id: string, data:Data){
   try {
-    console.log(data);
+    console.log(data); 
     await prisma.call.update({
       where: {
         id

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Call" ADD COLUMN     "price" INTEGER NOT NULL DEFAULT 0;
