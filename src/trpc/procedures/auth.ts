@@ -9,30 +9,6 @@ import { createActivity } from '../../utils/logs';
 
 
 
-export const createUser = t.procedure
-  .use(isAdmin)
-  .input(
-    z.object({
-      email: z.string().email(),
-      password: z.string().min(6),
-      name: z.string(),
-      role: z.enum(['USER', 'ADMIN', 'SUPERVISOR']),
-    }),
-  )
-  .mutation(async ({ input, ctx }) => {
-    const { email, password, role, name } = input;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-        role,
-      },
-    }); 
-    
-    return { user };
-});
 
 export const loginUser = t.procedure
   .input(

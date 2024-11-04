@@ -1,7 +1,7 @@
 import { t } from "../context";
 import { z } from "zod";
 import { prisma } from "../../utils/prisma"; 
-import { isAdmin } from "../../auth/middleware";
+import { isAdmin, isAuthenticated } from "../../auth/middleware";
 
 export const getAllCalls = t.procedure
   .query(async ({ ctx }) => {
@@ -81,4 +81,6 @@ export const deleteCall = t.procedure
 
     return deletedCall; 
   });
+
+
 

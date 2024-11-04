@@ -1,9 +1,11 @@
 import { t } from './context'
-import { createUser, loginUser, profile } from './procedures/auth'
+import { loginUser, profile } from './procedures/auth'
 import { getAllCalls } from './procedures/calls'
-import { test, webhook } from './procedures/calls_webhook'
+import { webhook } from './procedures/calls_webhook'
+import { createBulkSaleCalls, createSaleCall } from './procedures/sales'
 import { statuses } from './procedures/status'
 import { createVerificationCall } from './procedures/verification'
+import { createUser, deleteUser, getAllUsers, updateUser } from './procedures/users'
 
 
 
@@ -15,7 +17,11 @@ const appRouter = t.router({
   getAllCalls,
   statuses,
   webhook,
-  test
+  createSaleCall,
+  createBulkSaleCalls,
+  getAllUsers,
+  deleteUser,
+  updateUser
 })
 
 export default appRouter
