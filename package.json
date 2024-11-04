@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon src/server.ts",
     "build": "tsc",
+    "build:digitalocean": "npm install --production=false && npm run build && npm prune --production && npm run start",
     "start": "node dist/index.js",
     "test": "jest"
   },
