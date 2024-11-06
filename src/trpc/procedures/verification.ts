@@ -47,7 +47,7 @@ export const createVerificationCall = t.procedure
 			const callResponse = await createCall(assistant, VERIFICATION_NUMBER_ID, number);
       const callType = await prisma.callType.findUnique({
         where: {
-          id: 0
+          id: 1
         },
       });
 			const status = await prisma.status.findUnique({
