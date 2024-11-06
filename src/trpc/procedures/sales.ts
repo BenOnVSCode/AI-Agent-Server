@@ -83,7 +83,7 @@ export const createBulkSaleCalls = t.procedure
 				await prisma.call.create({
 					data: {
 						id: createdCall.id,
-						callTypeId: 1,
+						callTypeId: 2,
 						statusId: 0,
 						clientName: call.name,
 						clientAddress: call.address,
