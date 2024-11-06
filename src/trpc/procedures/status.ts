@@ -4,7 +4,6 @@ import { isAdmin } from "../../auth/middleware";
 import z from "zod";
 
 export const statuses = t.procedure
-  .use(isAdmin)
   .query(async () => {
     const statuses = await prisma.status.findMany({});
     return { statuses }

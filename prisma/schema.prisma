@@ -19,6 +19,7 @@ model User {
   activities Activity[] @relation("UserActivities") // Add this line
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  isDeleted  Boolean @default(false)
 }
 
 model Call {

@@ -20,7 +20,7 @@ export const loginUser = t.procedure
   .mutation(async ({ input }) => {
     const { email, password } = input;
     const user = await prisma.user.findUnique({
-      where: { email },
+      where: { email, isDeleted: false },
     });
 
     if (!user || !(await bcrypt.compare(password, user.password))) {

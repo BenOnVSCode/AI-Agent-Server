@@ -33,7 +33,7 @@ export const getAllUsers = t.procedure
 	.use(isAdmin)
 	.query(async ({ ctx }) => {
 		try {
-			const users = await prisma.user.findMany();
+			const users = await prisma.user.findMany({where: { isDeleted: false }, select: { id: true, name: true, email: true, role: true, createdAt: true }});
 			return { users };
 		} catch (error) {
 			console.log(error);
@@ -46,7 +46,7 @@ export const deleteUser = t.procedure
 	.input(z.object({ id: z.number() }))
 	.mutation(async ({ input }) => {
 		try {
-			await prisma.user.delete({ where: { id: input.id } });
+			await prisma.user.update({ where: { id: input.id }, data: { isDeleted: true } });
 			return { message: "User deleted successfully" };
 		} catch (error) {
 			console.log(error);
