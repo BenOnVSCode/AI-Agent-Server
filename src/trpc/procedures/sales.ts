@@ -27,7 +27,7 @@ export const createSaleCall = t.procedure
 			await prisma.call.create({
 				data: {
 					id: call.id,
-					callTypeId: 1,
+					callTypeId: 2,
 					statusId: 0,
 					clientName: name,
 					clientAddress: address,
