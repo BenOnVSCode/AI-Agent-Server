@@ -54,14 +54,17 @@ export interface Assistant {
 		];
 		provider: string;
 		temperature: number;
+		emotionRecognitionEnabled?: boolean;
+		fillerInjectionEnabled?: boolean;
 	};
 	voice: {
-		model: string;
-		provider: string;
-		style: number;
+		model?: string;
+		provider?: string;
+		style?: number;
 		voiceId: string;
-		stability: number;
-		similarityBoost: number;
+		stability?: number;
+		similarityBoost?: number;
+		fillerInjectionEnabled?: boolean
 	};
 	recordingEnabled: boolean;
 	firstMessage: string;
@@ -81,10 +84,14 @@ export interface Assistant {
 	};
 	startSpeakingPlan: {
 		smartEndpointingEnabled: boolean;
-		waitSeconds: number
+		waitSeconds: number,
+		
 	};
+	backchannelingEnabled?: boolean;
+	silenceTimeoutSeconds?: number, 
 	stopSpeakingPlan: {
 		voiceSeconds: number;
-		backoffSeconds: number;
+		backoffSeconds?: number;
+		numWords?: number
 	}
 }

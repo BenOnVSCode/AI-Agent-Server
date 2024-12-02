@@ -2,7 +2,7 @@ import { t } from './context'
 import { loginUser, profile } from './procedures/auth'
 import { getAllCalls } from './procedures/calls'
 import { webhook } from './procedures/calls_webhook'
-import { createBulkSaleCalls, createSaleCall } from './procedures/sales'
+import { createBulkFinanceCarSaleCalls, createBulkSaleCalls, createFinanceCarSaleCall, createSaleCall } from './procedures/sales'
 import { statuses } from './procedures/status'
 import { createVerificationCall } from './procedures/verification'
 import { createUser, deleteUser, getAllUsers, updateUser } from './procedures/users'
@@ -21,7 +21,9 @@ const appRouter = t.router({
   createBulkSaleCalls,
   getAllUsers,
   deleteUser,
-  updateUser
+  updateUser,
+  createFinanceCarSaleCall,
+  createBulkFinanceCarSaleCalls
 })
 
 export default appRouter

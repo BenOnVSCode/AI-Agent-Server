@@ -5,7 +5,9 @@ import { createSalesAssistant } from "../../utils/assistant/sales";
 import { createCall } from "../../services/createCall";
 import { prisma } from "../../utils/prisma";
 import { v4 as uuid } from "uuid";
-import { createCarFinanceSaleAssistant } from "../../utils/assistant/carFinanceSale";
+
+import { createFinanceSaleAssistant } from "../../utils/assistant/index";
+
 export const createSaleCall = t.procedure
 	.use(isAuthenticated)
 	.input(
@@ -122,7 +124,7 @@ export const createFinanceCarSaleCall = t.procedure
     if(!FINANCE_CAR_NUMBER_ID) {
       throw new Error("No number id was provided in the env file");
     }
-    const assistant = createCarFinanceSaleAssistant(name, address, postCode);
+    const assistant = createFinanceSaleAssistant(name, address, postCode);
     const createdCall = await createCall(assistant, FINANCE_CAR_NUMBER_ID, number);
     await prisma.call.create({
       data: {
@@ -161,7 +163,7 @@ export const createBulkFinanceCarSaleCalls = t.procedure
       throw new Error("No number id was provided in the env file");
     }
     calls.forEach(async (call) => {
-      const assistant = createCarFinanceSaleAssistant(call.name, call.address, call.postCode);
+      const assistant = createFinanceSaleAssistant(call.name, call.address, call.postCode);
       const createdCall = await createCall(assistant, FINANCE_CAR_NUMBER_ID, call.number);
       await prisma.call.create({
         data: {
