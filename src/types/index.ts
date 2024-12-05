@@ -68,7 +68,7 @@ export interface Assistant {
 	};
 	recordingEnabled: boolean;
 	firstMessage: string;
-	voicemailMessage: string;
+	voicemailMessage?: string;
 	endCallMessage: string;
 	clientMessages: string[];
 	serverMessages: string[];

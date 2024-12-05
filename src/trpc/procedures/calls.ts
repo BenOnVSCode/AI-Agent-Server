@@ -5,14 +5,16 @@ import { isAdmin, isAuthenticated } from "../../auth/middleware";
 
 export const getAllCalls = t.procedure
   .query(async ({ ctx }) => {
-    const query = ctx.req.query as { page: string }
+    const query = ctx.req.query as { page: string, callType?: string }
     const page = parseInt(query.page) || 1; 
     const limit = 10;
     const skip = (page - 1) * limit; 
-
+    const callTypeIds = query.callType ? query.callType.split('|').map(id => parseInt(id)) : [];
+    const callTypeFilter = callTypeIds.length > 0 ? { callTypeId: { in: callTypeIds } } : {}; 
     const calls = await prisma.call.findMany({
       skip, 
       take: limit, 
+      where: callTypeFilter,
       include: {
         user: {
           select: {

@@ -115,6 +115,9 @@ export function createFinanceSaleAssistant(
 								Be clear and transparent about the no-win, no-fee structure.
 								Maintain professionalism and warmth throughout the call.
 								Ensure the customer feels supported and that they understand the steps moving forward.
+
+
+								Do not repeat the costumer name multiple times unless they ask you to verify it.	
 `;
 
 const firstMessage = `Hello? Hi, is that ${clientName}?`;
@@ -146,8 +149,6 @@ const assistant: Assistant = {
 	},
 	recordingEnabled: true,
 	firstMessage: firstMessage,
-	voicemailMessage:
-		"Hey this is Mary from Mary's Dental. Please call back when you're available.",
 	endCallMessage: "Bye",
 	silenceTimeoutSeconds: 30,
 	clientMessages: [
