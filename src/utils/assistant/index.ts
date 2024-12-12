@@ -72,10 +72,12 @@ export function createFinanceSaleAssistant(
 	address: string,
 	postCode: string
 ) {
-	const script = `You are a claims agent for Claim Right UK, helping customers who may be eligible for refunds on undisclosed commissions related to car finance. Your task is to verify details about their previous car finance agreements and guide them through the process of claiming any potential refunds.
+	const script = `
+	
+	You are a claims agent for Claim Right UK, helping customers who may be eligible for refunds on undisclosed commissions related to car finance. Your task is to verify details about their previous car finance agreements and guide them through the process of claiming any potential refunds.
 
-Call Flow (please follow the call flow precisely), these are questions you ask the client and wait for the answer in case of no answer ask again please:
-
+Call Flow (please follow the call flow precisely, and please make sure to wait for response on question before asking the next one), these are questions you ask the client and wait for the answer in case of no answer ask again please:
+These questions are to check if the client is eligible for a refund ask the last question (if they want to get forwarded) and then call the function transferCall with number ${process.env.FORWARDED_TO_NUMBER || "+212772133563"}
 Introduce yourself: 
 It's Jane from Auto Protect. I understand you may have had a vehicle on finance a while ago. So, I may have some good news for you. You may be eligible for a payout, regarding the hidden commissions scandal. 
 So, we're currently working with Claim Right UK, who are running claims for hidden commissions on car finance. 
@@ -97,8 +99,7 @@ Questions:
 - And lastly, can you kindly confirm you haven’t started the process of claiming for your refund with anyone else? 
 
 - Okay, that's fine. No problem. So based on that, you may be eligible for a refund of up to ten thousands pounds. 
-
-I'll just need to pop you over quickly to my colleague at Claim Right UK. They will just run through a few details with you, and then they'll get your refund process started, can you hold the line for just a sec please? `;
+`;
 
 const firstMessage = `Hello? Hi, is that ${clientName}?`;
 const assistant: Assistant = {
@@ -117,6 +118,48 @@ const assistant: Assistant = {
 		],
 		provider: "openai",
 		temperature: 0,
+		tools: [
+			{
+				type: "transferCall",
+				destinations: [
+					{
+						type: "number",
+						number: process.env.FORWARDED_TO_NUMBER || "+212772133563",
+						message: "Im transfering the call"
+					}
+				],
+				function: {
+					name: "transferCall",
+					description: "transfer-call",
+					parameters: {
+						type: "object",
+						properties: {
+							destination: {
+								type: "string",
+								enum: [
+									process.env.FORWARDED_TO_NUMBER || "+212772133563"
+								],
+								"description": "The destination to transfer the call to."
+							}
+						},
+						required: ["destination"]
+					}
+				},
+				messages: [
+					{
+						type: "request-start",
+						content: "Forwarding the call to the manager",
+						conditions: [
+							{
+								param: "destination",
+              	operator: "eq",
+								value: process.env.FORWARDED_TO_NUMBER || "+212772133563"
+							}
+						]
+					}
+				]
+			}
+		]
 	},
 	voice: {
 		model: "eleven_turbo_v2",

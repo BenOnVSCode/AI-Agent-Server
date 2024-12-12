@@ -56,6 +56,59 @@ export interface Assistant {
 		temperature: number;
 		emotionRecognitionEnabled?: boolean;
 		fillerInjectionEnabled?: boolean;
+		tools?: [
+			{
+				type: "transferCall";
+				destinations: [
+					{
+						type: "number";
+						number: string;
+						message: string;
+						description?: string;
+						transferPlan?: {
+							mode:
+								| "warm-transfer-with-summary"
+								| "warm-transfer-with-message"
+								| "blind-transfer";
+							summaryPlan?: {
+								enabled: boolean;
+								messages: [
+									{
+										role: string;
+										content: string;
+									}
+								];
+							};
+							message?: string;
+						};
+					}
+				];
+				function: {
+					name: "transferCall";
+					description: string;
+					parameters: {
+						type: "object";
+						properties: {
+							destination: {
+								type: "string";
+								enum: string[];
+								description: string;
+							};
+						};
+						required: string[];
+					};
+				},
+				messages?: {
+					type: string;
+					content: string;
+					conditions: {
+						param: string;
+						operator: 'eq';
+						value: string;
+					}[];
+				}[]
+			}
+		];
 	};
 	voice: {
 		model?: string;
@@ -64,7 +117,7 @@ export interface Assistant {
 		voiceId: string;
 		stability?: number;
 		similarityBoost?: number;
-		fillerInjectionEnabled?: boolean
+		fillerInjectionEnabled?: boolean;
 	};
 	recordingEnabled: boolean;
 	firstMessage: string;
@@ -84,14 +137,13 @@ export interface Assistant {
 	};
 	startSpeakingPlan: {
 		smartEndpointingEnabled: boolean;
-		waitSeconds: number,
-		
+		waitSeconds: number;
 	};
 	backchannelingEnabled?: boolean;
-	silenceTimeoutSeconds?: number, 
+	silenceTimeoutSeconds?: number;
 	stopSpeakingPlan: {
 		voiceSeconds: number;
 		backoffSeconds?: number;
-		numWords?: number
-	}
+		numWords?: number;
+	};
 }
