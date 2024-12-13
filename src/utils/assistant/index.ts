@@ -69,8 +69,6 @@ export function createAssistant(
 
 export function createFinanceSaleAssistant(
 	clientName: string,
-	address: string,
-	postCode: string
 ) {
 	const script = `Please make sure to finish the questions before transfer
 Please do not transfer unless the client is eligible and answered all the questions
