@@ -5,7 +5,6 @@ import bcrypt from "bcrypt";
 import { prisma } from "../../utils/prisma";
 
 export const createUser = t.procedure
-	.use(isAdmin)
 	.input(
 		z.object({
 			email: z.string().email(),

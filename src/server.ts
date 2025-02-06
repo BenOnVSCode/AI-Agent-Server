@@ -1,8 +1,8 @@
+
 import app from './app';
 
 app.listen({
-  port: 8000,
-  host: '0.0.0.0', // This is mainly for digital ocean.
+  port: 8000
 }, (err, address) => {
   if (err) {
     console.error(err);

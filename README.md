@@ -1,15 +1,13 @@
 # Webhook Server
 
-A Fastify-based server that processes incoming webhook requests, transforms the data, and sends formatted emails using Mailgun.
+A Fastify-based server that processes incoming webhook requests, make calls.
 
 ## Table of Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Environment Variables](#environment-variables)
 - [Testing](#testing)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ## Installation
 
@@ -28,15 +26,18 @@ A Fastify-based server that processes incoming webhook requests, transforms the 
 
 3. **Set up environment variables:**
 
-   Create a `.env` file in the root directory and add the following variables:
+   Create a `.env` file by copying the existing `.env.example`
+   
+   EMAILS: This should contain the email address or list of emails used for system notifications or user verification.
+   DATABASE_URL: The connection string for your database, including the username, password, host, and database name (e.g., postgres://user:password@localhost:5432/mydatabase).
+   RESEND_API_KEY: Your API key for Resend—a service used for sending emails. You can get this API key from your Resend account dashboard.
+   VAPI_API_KEY: The API key for accessing the VAPI service, used for interacting with their API.
+   JWT_SECRET: A secret key for signing and verifying JSON Web Tokens (JWT). It is crucial for secure authentication and session management. Ensure this is a strong and random string.
+   SALES_NUMBER_ID= Sales number's ID
+   VERIFICATION_NUMBER_ID= Verfication number ID
+   FINANCE_CAR_NUMBER_ID= Finance Car number ID
 
-   ```plaintext
-   EMAILS="your_email@example.com"
-   MAILGUN_API_KEY="your_mailgun_api_key"
-   DOMAIN="your_mailgun_domain"
-   ```
-
-   Replace the placeholders with your actual Mailgun API key and domain.
+   Replace the placeholders with your actual keys.
 
 ## Usage
 
@@ -77,13 +78,6 @@ A Fastify-based server that processes incoming webhook requests, transforms the 
    }
    ```
 
-3. **Check your email for the formatted report.**
-
-## Environment Variables
-
-- `EMAILS`: Comma-separated list of email addresses to send reports to.
-- `MAILGUN_API_KEY`: Your Mailgun API key.
-- `DOMAIN`: Your Mailgun domain.
 
 ## Testing
 
@@ -94,11 +88,3 @@ npm test
 ```
 
 This will execute the Jest tests defined in the `src/tests` directory.
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request with your changes.
-
-## License
-
-This project is licensed under the ISC License. See the [LICENSE](LICENSE) file for details.
