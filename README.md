@@ -61,7 +61,7 @@ A Fastify-based server that processes incoming webhook requests, make calls.
    Use a tool like Postman or cURL to send a request to:
 
    ```
-   POST http://localhost:7000/costumer_service/vapi_webhook
+   POST http://localhost:7000/api/trpc/webhook
    ```
 
    **Request Body Example:**
