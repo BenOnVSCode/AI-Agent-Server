@@ -29,12 +29,19 @@ A Fastify-based server that processes incoming webhook requests, make calls.
    Create a `.env` file by copying the existing `.env.example`
    
    EMAILS: This should contain the email address or list of emails used for system notifications or user verification.
+   
    DATABASE_URL: The connection string for your database, including the username, password, host, and database name (e.g., postgres://user:password@localhost:5432/mydatabase).
+
    RESEND_API_KEY: Your API key for Resend—a service used for sending emails. You can get this API key from your Resend account dashboard.
+
    VAPI_API_KEY: The API key for accessing the VAPI service, used for interacting with their API.
+
    JWT_SECRET: A secret key for signing and verifying JSON Web Tokens (JWT). It is crucial for secure authentication and session management. Ensure this is a strong and random string.
+
    SALES_NUMBER_ID= Sales number's ID
+
    VERIFICATION_NUMBER_ID= Verfication number ID
+
    FINANCE_CAR_NUMBER_ID= Finance Car number ID
 
    Replace the placeholders with your actual keys.
